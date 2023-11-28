@@ -67,7 +67,7 @@ function CodeMirror({ code, editorTheme, onCodeChange }: Props) {
   }, [code]);
 
   return (
-    <div className="overflow-x-scroll overflow-y-scroll mx-2 border-[4px] border-black rounded-[20px]" ref={ref} />
+    <div className="overflow-x-scroll overflow-y-scroll mx-2 border-[4px] rounded-[20px]" ref={ref} />
   );
 }
 

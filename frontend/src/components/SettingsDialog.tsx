@@ -59,8 +59,7 @@ function SettingsDialog({ settings, setSettings }: Props) {
           <Label htmlFor="openai-api-key">
             <div>OpenAI API key</div>
             <div className="font-light mt-2 leading-relaxed">
-              Only stored in your browser. Never stored on servers. Overrides
-              your .env config.
+              The key is stored only in your browser. We do not have access to it.
             </div>
           </Label>
 
@@ -72,35 +71,6 @@ function SettingsDialog({ settings, setSettings }: Props) {
               setSettings((s) => ({
                 ...s,
                 openAiApiKey: e.target.value,
-              }))
-            }
-          />
-
-          <Label htmlFor="screenshot-one-api-key">
-            <div>
-              ScreenshotOne API key (optional - only needed if you want to use
-              URLs directly instead of taking the screenshot yourself)
-            </div>
-            <div className="font-light mt-2 leading-relaxed">
-              Only stored in your browser. Never stored on servers.{" "}
-              <a
-                href="https://screenshotone.com?via=screenshot-to-code"
-                className="underline"
-                target="_blank"
-              >
-                Get 100 screenshots/mo for free.
-              </a>
-            </div>
-          </Label>
-
-          <Input
-            id="screenshot-one-api-key"
-            placeholder="ScreenshotOne API key"
-            value={settings.screenshotOneApiKey || ""}
-            onChange={(e) =>
-              setSettings((s) => ({
-                ...s,
-                screenshotOneApiKey: e.target.value,
               }))
             }
           />

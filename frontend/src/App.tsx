@@ -13,21 +13,17 @@ import {
   FaUndo,
 } from "react-icons/fa";
 
-import { Switch } from "./components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import SettingsDialog from "./components/SettingsDialog";
 import { Settings, EditorTheme, AppState } from "./types";
-import { IS_RUNNING_ON_CLOUD } from "./config";
-import { PicoBadge } from "./components/PicoBadge";
 import { OnboardingNote } from "./components/OnboardingNote";
 import { usePersistedState } from "./hooks/usePersistedState";
-import { UrlInputSection } from "./components/UrlInputSection";
-import TermsOfServiceDialog from "./components/TermsOfServiceDialog";
 import html2canvas from "html2canvas";
 import { USER_CLOSE_WEB_SOCKET_CODE } from "./constants";
 import CodeTab from "./components/CodeTab";
+import Header from "@/components/Header";
 
 function App() {
   const [appState, setAppState] = useState<AppState>(AppState.INITIAL);
@@ -46,7 +42,7 @@ function App() {
     },
     "setting"
   );
-  const [shouldIncludeResultImage, setShouldIncludeResultImage] =
+  const [shouldIncludeResultImage] =
     useState<boolean>(false);
   const wsRef = useRef<WebSocket>(null);
 
@@ -149,36 +145,16 @@ function App() {
     setUpdateInstruction("");
   }
 
-  const handleTermDialogOpenChange = (open: boolean) => {
-    setSettings((s) => ({
-      ...s,
-      isTermOfServiceAccepted: !open,
-    }));
-  };
-
   return (
-    <div className="mt-2">
-      {IS_RUNNING_ON_CLOUD && <PicoBadge />}
-      {IS_RUNNING_ON_CLOUD && (
-        <TermsOfServiceDialog
-          open={!settings.isTermOfServiceAccepted}
-          onOpenChange={handleTermDialogOpenChange}
-        />
-      )}
+      <div>
+        <Header />
+        <h1 className="text-2xl w-full text-center">Screenshot to HTML</h1>
+        <div className="mt-2">
+          <div className="container px-12">
+              <div className="w-full text-center">
+                <SettingsDialog settings={settings} setSettings={setSettings} />
 
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:flex-col">
-        <div className="flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6">
-          <div className="flex items-center justify-between mt-10">
-            <h1 className="text-2xl ">Screenshot to Code</h1>
-            <SettingsDialog settings={settings} setSettings={setSettings} />
-          </div>
-          {appState === AppState.INITIAL && (
-            <h2 className="text-sm text-gray-500 mb-2">
-              Drag & drop a screenshot to get started.
-            </h2>
-          )}
-
-          {IS_RUNNING_ON_CLOUD && !settings.openAiApiKey && <OnboardingNote />}
+          {!settings.openAiApiKey && <OnboardingNote />}
 
           {(appState === AppState.CODING ||
             appState === AppState.CODE_READY) && (
@@ -195,7 +171,9 @@ function App() {
                       Stop
                     </Button>
                   </div>
-                  <CodePreview code={generatedCode} />
+                  <div className="flex mt-4 w-full">
+                    <CodePreview code={generatedCode} />
+                  </div>
                 </div>
               )}
 
@@ -207,15 +185,6 @@ function App() {
                       onChange={(e) => setUpdateInstruction(e.target.value)}
                       value={updateInstruction}
                     />
-                    <div className="flex justify-between items-center gap-x-2">
-                      <div className="font-500 text-xs text-slate-700">
-                        Include screenshot of current version?
-                      </div>
-                      <Switch
-                        checked={shouldIncludeResultImage}
-                        onCheckedChange={setShouldIncludeResultImage}
-                      />
-                    </div>
                     <Button onClick={doUpdate}>Update</Button>
                   </div>
                   <div className="flex items-center gap-x-2 mt-2">
@@ -273,14 +242,10 @@ function App() {
         </div>
       </div>
 
-      <main className="py-2 lg:pl-96">
+      <main className="flex-col grow flex">
         {appState === AppState.INITIAL && (
           <div className="flex flex-col justify-center items-center gap-y-10">
             <ImageUpload setReferenceImages={doCreate} />
-            <UrlInputSection
-              doCreate={doCreate}
-              screenshotOneApiKey={settings.screenshotOneApiKey}
-            />
           </div>
         )}
 
@@ -319,6 +284,7 @@ function App() {
         )}
       </main>
     </div>
+      </div>
   );
 }
 

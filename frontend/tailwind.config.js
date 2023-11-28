@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        button: "#ffd803",
+        button: "#FE6A04",
         highlight: "#ffd803",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -25,7 +25,7 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#FE6A04",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
